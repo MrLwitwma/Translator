@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator</title>
+</head>
+<body>
+    <textarea id="inputText" cols="30" rows="10"></textarea>
+    <div id="output"></div>
+
+    <script>
+        function translateText() {
+            var inputText = document.getElementById("inputText").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/translate", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById("output").innerHTML = response.translated_text;
+                }
+            };
+            xhr.send("input_text=" + encodeURIComponent(inputText));
+        }
+        const input = document.getElementById('inputText');
+        input.addEventListener('input', ()=>{
+            translateText()
+        })
+    </script>
+</body>
+</html>
